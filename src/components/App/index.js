@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
-// import logo from './logo.svg';
 import './App.css';
 import List from '../List';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
+
 
 class App extends Component {
   constructor(props) {
@@ -40,10 +42,10 @@ class App extends Component {
 
     render(){
       return(
-        <div>
+        <div><br/>
           <form onSubmit={this.onSubmit}>
-            <input placeholder="Add your todo" value = {this.state.term} onChange={this.onChange} />
-            <button type="submit">Add To Do</button>
+            <TextField hintText="Add your todo, that you need to do, to do what you need to do." value = {this.state.term} onChange={this.onChange} fullWidth={true} />
+            <RaisedButton type="submit" label="Submit" primary={true} fullWidth={true} />
           </form>
 
           <List items={this.state.items} onComplete={this.onComplete}/>
