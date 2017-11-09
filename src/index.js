@@ -11,7 +11,7 @@ import {purple300} from 'material-ui/styles/colors';
 
 const muiTheme = getMuiTheme({
   palette: {
-    textColor: 'black',
+    textColor: purple300,
   },
   appBar: {
     color: purple300,

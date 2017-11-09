@@ -27,7 +27,18 @@ textDecoration: 'none'
 
   return(
       <ul>
-        {props.items.map((items, index)=><li key={index} style={done[items.complete ? 'complete' : 'incomplete']}>{items.todo}<button style={{...staticStyle, ...style[items.complete ? 'complete' : 'incomplete'], ...props.styles}} onClick={()=>props.onComplete(index)}>{items.complete?'done':'todo'}</button></li>)}
+        {props.items.map((item, index) => (
+            <li key={index}
+              style={done[item.complete ? 'complete' : 'incomplete']}
+            >
+              {item.todo}
+              <button
+                style={{...staticStyle, ...style[item.complete ? 'complete' : 'incomplete'], ...props.styles}}
+                onClick={() => props.onComplete(index)}>{item.complete?'done':'todo'}
+              </button>
+            </li>
+          )
+        )}
       </ul>
 )};
 

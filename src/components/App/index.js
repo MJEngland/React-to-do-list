@@ -3,7 +3,7 @@ import './App.css';
 import List from '../List';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-
+import {purple300} from 'material-ui/styles/colors';
 
 class App extends Component {
   constructor(props) {
@@ -13,21 +13,53 @@ class App extends Component {
       items: [],
     }
   }
-    onChange=(event)=>{
-      this.setState({
-        term: event.target.value
-      });
-    }
 
-    onSubmit =(event) => {
+  componentDidMount() {
+
+  }
+
+  getTodos = () => {
+    fetch('/api/todos').then(result => {
+      console.log(result);
+      return result.json()
+    }).then(value => {
+      this.setState(prevState => ({
+        items: value.payload.map(item => ({
+          todo: item.item,
+          complete: item.complete
+        }))
+      }))
+    })
+  }
+
+  onChange=(event)=>{
+    this.setState({
+      term: event.target.value
+    });
+  }
+
+    onSubmit = (event) => {
+      fetch('/api/todos', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify({item: this.state.term, complete: false})
+      }).then(res => res.json()).then(value => {
+        console.log(value)
+        this.getTodos();
+      }).catch(err => console.log(err));
       event.preventDefault();
-      this.setState({
-        term: '',
-        items: [...this.state.items, {
-          todo: this.state.term,
-          complete: false
-        }]
-      })
+      // this.setState({
+      //   term: '',
+      //   items: [
+      //     ...this.state.items, {
+      //       items: this.state.term,
+      //       complete: false
+      //     }
+      //   ]
+      // })
     }
 
     onComplete = index =>{
@@ -41,11 +73,14 @@ class App extends Component {
     }
 
     render(){
+const style = {
+  color: purple300,
+}
       return(
         <div><br/>
           <form onSubmit={this.onSubmit}>
             <TextField hintText="Add your todo, that you need to do, to do what you need to do." value = {this.state.term} onChange={this.onChange} fullWidth={true} />
-            <RaisedButton type="submit" label="Submit" primary={true} fullWidth={true} />
+            <RaisedButton style={style} type="submit" label="Submit" primary={true} fullWidth={true} />
           </form>
 
           <List items={this.state.items} onComplete={this.onComplete}/>
